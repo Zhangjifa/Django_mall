@@ -1,0 +1,77 @@
+{% extends "myadmin/base.html" %}
+
+{% block mainbody %}
+    <h3>
+        商品信息浏览
+    </h3>
+    <br>
+    <!-- <form id="edit-profile" action="" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <div class="nav-collapse">
+                关键字：<input type="text"  placeholder="商品名称">
+
+                <input type="submit" value="搜索">
+                <input type="reset" value="全部">
+            </div>
+        </fieldset>
+    </form> -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID号</th>
+                <th>商品名称</th>
+                <th>商品类别</th>
+                <th>图片</th>
+                <th>价格</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in goodslist %}
+            <tr>
+                <td>{{ vo.id }}</td>
+                <td>{{ vo.goods }}</td>
+                <td>{{ vo.typename }}
+                <td><img src="/static/goods/s_{{ vo.picname }}" width="60"/></td>
+                <td>{{ vo.price }}</td>
+                <td>
+                    {%if vo.state == 0%}在售
+                    {%elif vo.state == 1%}新品
+                    {%elif vo.state == 2%}下架{% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'myadmin_goods_edit' vo.id %}" class="view-link">编辑</a>
+                    <a class="btn btn-danger" href="javascript:doDel('{% url 'myadmin_goods_del' vo.id %}')" class="view-link">删除</a></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <ul>
+            <li>
+                {% if pIndex > 1%}
+                    <a href="{% url 'myadmin_goods_index' pIndex|add:-1 %}">&laquo;</a>
+                {% else %}
+                    <a href="{% url 'myadmin_goods_index' pIndex %}">&laquo;</a>
+                {% endif %}
+            </li>
+            <li>
+             {% for p in plist %}
+            <li {% if pIndex == p %}class="active"{% endif %}>
+                <a href="{% url 'myadmin_goods_index' p %}">{{p}}</a>
+            </li>
+            {% endfor %}
+            <li>
+                {% if pIndex < maxpages%}
+                    <a href="{% url 'myadmin_goods_index' pIndex|add:1 %}">&raquo;</a>
+                {% else %}
+                    <a href="{% url 'myadmin_goods_index' maxpages %}">&raquo;</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}

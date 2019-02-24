@@ -1,0 +1,39 @@
+{% extends "myadmin/base.html" %}
+
+{% block mainbody %}
+    <h4>
+        11111
+    </h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>账号</th>
+                <th>真实姓名</th>
+                <th>性别</th>
+                <th>邮箱</th>
+                <th>注册时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in userslist %}
+            <tr>
+                <td>{{ vo.username }}</td>
+                <td>{{ vo.name }}</td>
+                <td>{% if vo.sex == 1 %}男{% else %}女{% endif %}</td>
+                <td>{{ vo.email }}</td>
+                <td>{{ vo.addtime|date:'Y-m-d H:i:s' }}</td>
+                <td>{{ vo.state }}</td>
+                <td>
+                    <a href="{% url 'myadmin_users_edit' vo.id %}" class="view-link">编辑</a>
+                    <a href="javascript:doDel('{% url 'myadmin_users_delete' vo.id %}')" class="view-link">删除</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

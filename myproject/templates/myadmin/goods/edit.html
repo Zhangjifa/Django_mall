@@ -1,0 +1,119 @@
+{% extends "myadmin/base.html" %}
+
+{% block mainbody %}
+    <link rel="stylesheet" type="text/css" href="/ueditor/UE/third-party/SyntaxHighlighter/shCoreDefault.css">
+    <script type="text/javascript" src="/ueditor/UE/third-party/SyntaxHighlighter/shCore.js"></script>
+    <script type="text/javascript" src="/ueditor/UE/ueditor.config.js"></script>
+    <script type="text/javascript" src="/ueditor/UE/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="/ueditor/UE/lang/zh-cn/zh-cn.js"></script>
+    <h3>
+        商品信息管理
+    </h3>
+    <form id="edit-profile" action="{% url 'myadmin_goods_update' goodslist.id %}" class="form-horizontal"
+          method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="oldpicname" value="{{ goodslist.picname }}"/>
+        <fieldset>
+            <legend>查看/编辑商品信息</legend>
+            <div class="control-group">
+                 <label class="control-label">商品类别：</label>
+                <div class="controls">
+                    <select  name="typeid">
+                        {% for vo in typeslist %}
+                            <option
+                                {% if vo.pid == 0 %}
+                                    disabled
+                                {% endif %}
+
+                                {% if vo.id == goodslist.typeid %}
+                                    selected
+                                {% endif %}
+                                 value="{{ vo.id }}">{{ vo.pname }}|--{{ vo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">商品名称：</label>
+                <div class="controls">
+                    <input type="text" name="goods" class="input-xlarge"  value="{{ goodslist.goods }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">生产厂商：</label>
+                <div class="controls">
+                    <input type="text" name="company" class="input-xlarge"  value="{{ goodslist.company }}" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">单价：</label>
+                <div class="controls">
+                    <input type="text" name="price" class="input-xlarge" value="{{ goodslist.price }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >库存：</label>
+                <div class="controls">
+                    <input type="text" name="store" class="input-xlarge" value="{{ goodslist.store }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">销售量：</label>
+                <div class="controls">
+                    <input type="text" name="num" class="input-xlarge" disabled="ture" value="{{ goodslist.num }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">点击量：</label>
+                <div class="controls">
+                    <input type="text" name="clicknum" class="input-xlarge" disabled="ture" value="{{ goodslist.clicknum }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">添加时间：</label>
+                <div class="controls">
+                    <input type="text" name="addtime" class="input-xlarge" disabled="ture" value="{{ goodslist.addtime }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">商品图片：</label>
+                <div class="controls">
+                    <input type="file" name="picname" class="input-xlarge" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">状态：</label>
+                <div class="controls">
+                   <input type="radio" name="state" class="input-xlarge" value="0"
+                    {% if goodslist.state == 0 %}checked{% endif %} /> 在售
+                    <input type="radio" name="state" class="input-xlarge" value="1"
+                    {% if  goodslist.state == 1 %}checked{% endif %} /> 新品
+                    <input type="radio" name="state" class="input-xlarge" value="2"
+                    {% if  goodslist.state == 2 %}checked{% endif %} /> 下架
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">商品简介：</label>
+                <div class="controls">
+                    <script id="editor" name="content" type="text/plain" style="height:500px;">{{ goodslist.content|safe }}</script>
+                   <!-- <textarea class="input-xlarge" cols="40" style="width: 450px" rows="10" name="content">{{goodslist.content}}</textarea> -->
+
+                </div>
+            </div>
+             <div class="form-actions">
+                <button type="submit" class="btn btn-primary">修改</button>
+                <button type="reset" class="btn">重置</button>
+            </div>
+
+        </fieldset>
+    </form>
+    <div class="control-group" align="center">
+        <img src="/static/goods/{{ goodslist.picname }}" width="375"/>
+    </div>
+
+                    <script type="text/javascript">
+        var ue = UE.getEditor('editor');
+        SyntaxHighlighter.all();
+    </script>
+{% endblock %}

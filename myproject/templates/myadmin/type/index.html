@@ -1,0 +1,57 @@
+{% extends "myadmin/base.html" %}
+
+{% block mainbody %}                
+    <h4>
+        商品类别信息管理
+    </h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID号</th>
+                <th>类别名称</th>
+                <th>父类别id</th>
+                <th>路径</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vo in typeslist %}
+            <tr>
+                <td>{{ vo.id }}</td>
+                <td>{{ vo.pname}}|-- {{ vo.name }}</td>
+                <td>{{ vo.pid }}</td>
+                <td>{{ vo.path }}</td>
+                <td width="30%">
+                    <a href="{% url 'myadmin_type_add' vo.id %}" class="view-link">添加子类别</a>
+                    <a href="{% url 'myadmin_type_del' vo.id %}" class="view-link">删除</a>
+                    <a href="{% url 'myadmin_type_edit' vo.id %}" class="view-link">编辑</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>                
+    <div class="pagination">
+        <ul>
+            <li>
+                {% if pIndex > 1%}
+                    <a href="{% url 'myadmin_type_index' pIndex|add:-1 %}">&laquo;</a>
+                {% else %}
+                    <a href="{% url 'myadmin_type_index' pIndex %}">&laquo;</a>
+                {% endif %}
+            </li>
+            <li>
+             {% for p in plist %}
+            <li {% if pIndex == p %}class="active"{% endif %}>
+                <a href="{% url 'myadmin_type_index' p %}">{{p}}</a>
+            </li>
+            {% endfor %}
+            <li>
+                {% if pIndex < maxpages%}
+                    <a href="{% url 'myadmin_type_index' pIndex|add:1 %}">&raquo;</a>
+                {% else %}
+                    <a href="{% url 'myadmin_type_index' maxpages %}">&raquo;</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+{% endblock %}

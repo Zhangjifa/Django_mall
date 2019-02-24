@@ -1,0 +1,128 @@
+{% extends "web/base.html" %}
+{% load static from staticfiles %}
+
+{% block mylink %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'web/css/member.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'web/css/member-app.css' %}">
+
+{% endblock %}
+
+{% block mainbody %}
+
+<!-- 主内容区域 -->
+    <div class="mainbody order">
+        <div class="container">
+            <!-- 面包屑导航 -->
+            <div class="crumbs ">
+                <ol class="breadcrumb">
+                    <li class="hidden-xs hidden-sm"><a href="{% url 'index' %}">首页</a></li>
+                    <li class="active"><a href="{% url 'vipuser' %}">个人中心</a></li>
+                </ol>
+            </div><!-- 面包屑导航 E-->
+            
+            <div class="main clearfix">
+                <!-- 左侧导航 -->
+                <div class="left-nav f-fl hidden-xs hidden-sm">
+                    <div class="nav-main">
+                        <a href="{% url 'viporders' %}" class="type-title"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>订单中心</a>
+                        <a href="{% url 'viporders' %}" class="ml" >我的订单</a>
+                        <a href="#" class="ml " >我的回购单</a>
+                        <a href="#" class="ml " >我的意外保</a>
+                        <a href="{% url 'vipuser' %}" class="type-title"><span class="glyphicon glyphicon-user" aria-hidden="true" ></span>个人中心</a>
+                        <a href="{% url 'vipuser' %}" class="ml active">个人信息</a>
+                        <a href="#" class="ml " >我的收藏</a>
+                        <a href="#" class="ml " >消息提醒</a>
+                        <a href="#" class="ml ">建议反馈</a>
+                    </div>
+                </div><!-- 左侧导航 E-->
+                <!-- 右侧导航 E-->
+                {% if info %}
+                    <div class="tip-box">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        <span class="tip-font">{{info}}</span>
+                        <span aria-hidden="true" class="cha">&times;</span>
+                        </button>
+                    </div>
+                  {% endif %}
+                <form action="{% url 'vipupdate' request.session.vipuser.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="cart-merchant-list">
+                        <div class="cart-merchant">
+                            <table class="cart-merchant-body">
+                                <tbody>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          账户：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                          <input type="text" disabled value="{{ userlist.username }}"  name="linkman" size="40"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          真实姓名：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                          <input type="text" name="name"  value="{{ userlist.name}}" size="40"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          性别：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                            <input type="radio" name="sex" class="input-xlarge" value="1"
+                                            {% if userlist.sex == 1 %} checked {% endif %} /> 男
+                                            <input type="radio" name="sex" class="input-xlarge" value="0"
+                                            {% if userlist.sex == 0 %} checked {% endif %} /> 女
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          收货地址：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                          <input type="text" name="address"  value="{{ userlist.address}}" size="40"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          联系电话：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                            <input type="text" name="phone" value="{{ userlist.phone}}" size="40"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          邮编：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                          <input type="text" name="code"  value="{{ userlist.code}}" size="40"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="cart-product" style="height:60px;border:none;">
+                                        <td class="cart-col-select col-md-2 col-xs-3 col-sm-3" style="text-align: right;">
+                                          邮箱：
+                                        </td>
+                                        <td class="cart-col-name col-md-3 col-xs-4 col-sm-4">
+                                          <input type="text" name="email"  value="{{ userlist.email}}" size="40"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- 订单物流地址信息 E-->
+                    <div align="center">
+                        <button type="submit" class="btn btn-primary">保存
+                        </button> <button type="reset" class="btn">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
